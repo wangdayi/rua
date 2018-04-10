@@ -2,7 +2,7 @@ import logging
 
 from flask import Flask, request
 import requests
-import matplotlib.pyplot as plt
+import matplotlib
 matplotlib.use('agg')
 import numpy as np
 import skfmm
@@ -64,10 +64,10 @@ def query():
 
     print("shortest path lenth is " + str(dis1[n,n]) + "miles.")
     px,py = path_find(dis,0,n,step)
-    fig = plt.pcolor(X,Y,phi)
-    plt.plot(px,py)
-    plt.axis('equal')
-    plt.show()
+    fig = matplotlib.plt.pcolor(X,Y,phi)
+    matplotlib.plt.plot(px,py)
+    matplotlib.plt.axis('equal')
+    matplotlib.plt.show()
     return 'Avoid Hazard Zone When n is ' + str(n)
 
 @app.errorhandler(500)
