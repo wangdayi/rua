@@ -1,31 +1,72 @@
-# Copyright 2015 Google Inc. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-# [START app]
 import logging
 
-from flask import Flask
-
+from flask import Flask, request
+import requests
 
 app = Flask(__name__)
 
+def path_find(dis,st,ed,step):
+    curx, cury = st, st
+    px, py = [], []
+    while curx<ed and cury<ed:
+        px.append(curx*step)
+        py.append(cury*step)
+        mydis = list((dis[curx+1,cury],dis[curx,cury+1],dis[curx+1,cury+1]))
+        mydir = list(((1,0),(0,1),(1,1)))
+        myidx = mydis.index(min(mydis))
+        curx = curx + mydir[myidx][0]
+        cury = cury + mydir[myidx][1]
+        #print(curx,cury)
+    while curx<ed:
+        px.append(curx*step)
+        py.append(cury*step)
+        curx = curx + 1
+    while cury<ed:
+        px.append(curx*step)
+        py.append(cury*step)
+        cury = cury + 1
+    return px, py
+    
+
+def dig_fm(n=200,Cx=10,Cy=10,R=5):
+    L=20
+    step = L/n
+    X, Y = np.meshgrid(np.linspace(0,L,n+1), np.linspace(0,L,n+1))
+    phi, mask = np.ones_like(X), np.zeros_like(X)
+    phi[0,0] = 0
+    for i in range(n+1):
+        for j in range(n+1):
+            if (X[i,j]-Cx)**2+(Y[i,j]-Cy)**2<=R**2:
+                mask[i,j] = 1
+    phi = np.ma.MaskedArray(phi,mask)
+    dis1= skfmm.distance(phi, dx=step)
+    phi[0,0] = 1
+    phi[n,n] = 0
+    dis2= skfmm.distance(phi, dx=step)
+    dis = dis1 + dis2
+    print("shortest path lenth is " + str(dis1[n,n]) + "miles.")
+    px,py = path_find(dis,0,n,step)
+    fig = plt.pcolor(X,Y,phi)
+    plt.plot(px,py)
+    plt.axis('equal')
+    plt.show()
 
 @app.route('/')
 def hello():
-    """Return a friendly HTTP greeting."""
-    return 'Hello World!'
+    return 'Hello! Wdy 290 Hw5, please provide data and n!'
 
+@app.route('/query')
+def query():
+    mydate = request.args.get('date')
+    n = request.args.get('n')
+    mystr = "https://ce290-hw5-weather-report.appspot.com/?date=" + str(mydate)
+    res = requests.get(mystr)
+    myres = res.json()
+    Cx = myres['centroid_x']
+    Cy = myres['centroid_y']
+    R = myres['radius']
+    dig_fm(n=n,Cx=Cx,Cy=Cy,R=R)
+    return 'Avoid Hazard Zone When n is ' + str(n)
 
 @app.errorhandler(500)
 def server_error(e):
