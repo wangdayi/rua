@@ -2,6 +2,10 @@ import logging
 
 from flask import Flask, request
 import requests
+import matplotlib.pyplot as plt
+import numpy as np
+import skfmm
+import math
 
 app = Flask(__name__)
 
