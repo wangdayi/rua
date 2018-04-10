@@ -1,8 +1,7 @@
 Flask==0.12.2
 gunicorn==19.7.1
-numpy
-skfmm
-matplotlib
-scipy
-math
-requests
+numpy==1.13.3
+skfmm==0.0.9
+matplotlib=2.1.0
+scipy=0.19.1
+requests=2.18.4
