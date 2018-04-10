@@ -4,7 +4,7 @@ entrypoint: gunicorn -b :$PORT main:app
 
 libraries:
 - name: numpy
-  version: "1.6.1"
+  version: "1.13.3"
 
 runtime_config:
   python_version: 3
