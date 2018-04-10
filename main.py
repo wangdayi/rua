@@ -3,6 +3,7 @@ import logging
 from flask import Flask, request
 import requests
 import matplotlib.pyplot as plt
+matplotlib.use('agg')
 import numpy as np
 import skfmm
 import math
