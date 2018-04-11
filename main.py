@@ -28,7 +28,8 @@ def query():
     Cy = myres['centroid_y']
     R = myres['radius']
     L=20
-    step = L/float(n)
+    n=int(n)
+    step = L/n
     X, Y = np.meshgrid(np.linspace(0,L,n+1), np.linspace(0,L,n+1))
     phi, mask = np.ones_like(X), np.zeros_like(X)
     phi[0,0] = 0
