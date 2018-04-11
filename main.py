@@ -38,6 +38,7 @@ def query():
             if (X[i,j]-Cx)**2+(Y[i,j]-Cy)**2<=R**2:
                 mask[i,j] = 1
     phi = np.ma.MaskedArray(phi,mask)
+    np.ma.set_fill_value(phi, 200000)
     dis1= skfmm.distance(phi, dx=step)
     phi[0,0] = 1
     phi[n,n] = 0
@@ -50,6 +51,7 @@ def query():
         while curx<ed and cury<ed:
             px.append(curx*step)
             py.append(cury*step)
+            if dis[curx+1,cury]
             mydis = list((dis[curx+1,cury],dis[curx,cury+1],dis[curx+1,cury+1]))
             mydir = list(((1,0),(0,1),(1,1)))
             myidx = mydis.index(min(mydis))
@@ -66,12 +68,13 @@ def query():
             cury = cury + 1
         return px, py
 
-    print(dis1[n,n])
     px,py = path_find(dis,0,n,step)
     fig = Figure()
+    fig.suptitle('Shortest path ' + str(dis[n,n]) + ' miles')
     axis=fig.add_subplot(1,1,1)
     axis.pcolor(X,Y,phi)
     axis.plot(px,py)
+    axis.axis('equal')
     canvas=FigureCanvas(fig)
     output=io.BytesIO()
     canvas.print_png(output)
