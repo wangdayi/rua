@@ -73,7 +73,7 @@ def query():
     axis.pcolor(X,Y,phi)
     axis.plot(px,py)
     canvas=FigureCanvas(fig)
-    output=io.StringIO()
+    output=io.BytesIO()
     canvas.print_png(output)
     response = make_response(output.getvalue())
     response.mimetype = 'image/png'
