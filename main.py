@@ -4,9 +4,12 @@ from flask import Flask, request
 import requests
 import matplotlib
 matplotlib.use('agg')
+from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
+from matplotlib.figure import Figure
 import numpy as np
 import skfmm
 import math
+import StringIO
 
 app = Flask(__name__)
 
@@ -18,7 +21,7 @@ def hello():
 def query():
     mydate = request.args.get('date')
     n = request.args.get('n')
-    mystr = "https://ce290-hw5-weather-report.appspot.com/?date=" + str(mydate)
+    mystr = "https://ce290-hw5-weather-report.appspot.com/?date=" + mydate
     res = requests.get(mystr)
     myres = res.json()
     Cx = myres['centroid_x']
@@ -62,13 +65,19 @@ def query():
             cury = cury + 1
         return px, py
 
-    print("shortest path lenth is " + str(dis1[n,n]) + "miles.")
+    print(dis1[n,n])
     px,py = path_find(dis,0,n,step)
-    fig = matplotlib.plt.pcolor(X,Y,phi)
-    matplotlib.plt.plot(px,py)
-    matplotlib.plt.axis('equal')
-    matplotlib.plt.show()
-    return 'Avoid Hazard Zone When n is ' + str(n)
+    fig = Figure()
+    axis=fig.add_subplot(1,1,1)
+    axis.pcolor(X,Y,phi)
+    axis.plot(px,py)
+    axis('equal')
+    canvas=FigureCanvas(fig)
+    output=StringIO.StringIO()
+    canvas.print_png(output)
+    response = make_response(output.getvalue())
+    response.mimetype = 'image/png'
+    return response
 
 @app.errorhandler(500)
 def server_error(e):
