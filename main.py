@@ -72,7 +72,6 @@ def query():
     axis=fig.add_subplot(1,1,1)
     axis.pcolor(X,Y,phi)
     axis.plot(px,py)
-    axis('equal')
     canvas=FigureCanvas(fig)
     output=io.StringIO()
     canvas.print_png(output)
