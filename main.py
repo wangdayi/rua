@@ -1,6 +1,6 @@
 import logging
 
-from flask import Flask, request
+from flask import Flask, request, make_response
 import requests
 import matplotlib
 matplotlib.use('agg')
