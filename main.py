@@ -72,7 +72,7 @@ def query():
     fig.suptitle('Shortest path is' + str(dis[n,n]) + ' miles\n' +str(Cx)+str(Cy)+str(R))
     axis=fig.add_subplot(1,1,1)
     axis.pcolor(X,Y,phi)
-    axis.plot(px,py)
+    axis.plot(py,px)
     axis.axis('equal')
     canvas=FigureCanvas(fig)
     output=io.BytesIO()
