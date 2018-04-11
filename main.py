@@ -69,7 +69,7 @@ def query():
 
     px,py = path_find(dis,0,n,step)
     fig = Figure()
-    fig.suptitle('Shortest path ' + str(dis[n,n]) + ' miles\n' +str(Cx)+str(Cy)+str(R))
+    fig.suptitle('Shortest path is' + str(dis[n,n]) + ' miles\n' +str(Cx)+str(Cy)+str(R))
     axis=fig.add_subplot(1,1,1)
     axis.pcolor(X,Y,phi)
     axis.plot(px,py)
