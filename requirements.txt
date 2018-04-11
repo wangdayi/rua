@@ -1,7 +1,6 @@
+numpy
 Flask==0.12.2
 gunicorn==19.7.1
 matplotlib==2.1.0
 requests==2.18.4
 scikit-fmm==0.0.9
-numpy
-io
