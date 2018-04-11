@@ -9,7 +9,7 @@ from matplotlib.figure import Figure
 import numpy as np
 import skfmm
 import math
-import StringIO
+import io
 
 app = Flask(__name__)
 
@@ -73,7 +73,7 @@ def query():
     axis.plot(px,py)
     axis('equal')
     canvas=FigureCanvas(fig)
-    output=StringIO.StringIO()
+    output=io.StringIO()
     canvas.print_png(output)
     response = make_response(output.getvalue())
     response.mimetype = 'image/png'
